@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+    -
+      name: Checkout
+      uses: actions/checkout@v3
+    -
+      name: Setup Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.20.x
+        cache: true
+    -
+      name: Lint
+      uses: golangci/golangci-lint-action@v3
+      with:
+        version: latest
+        only-new-issues: true
+
+  test:
+    name: test
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        go-version: [ '1.19.x', '1.20.x' ]
+    steps:
+    -
+      name: Checkout
+      uses: actions/checkout@v3
+    -
+      name: Setup Go ${{ matrix.go-version }}
+      uses: actions/setup-go@v3
+      with:
+        go-version: ${{ matrix.go-version }}
+        cache: true
+    -
+      name: Test
+      run: go test -race -coverprofile=coverage-${{ matrix.go-version }}.out -covermode=atomic ./...

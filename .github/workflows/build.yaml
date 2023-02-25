@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        go-version: [ '1.19.x', '1.20.x' ]
+    steps:
+    -
+      name: Checkout
+      uses: actions/checkout@v3
+    -
+      name: Setup Go ${{ matrix.go-version }}
+      uses: actions/setup-go@v3
+      with:
+        go-version: ${{ matrix.go-version }}
+        cache: true
+    -
+      name: Build ${{ matrix.go-version }}
+      run: go build -v ./...
