@@ -1,1 +1,1 @@
-# cielo-go
+# Cielo API client
