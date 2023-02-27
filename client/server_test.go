@@ -1,6 +1,7 @@
 package client
 
 import (
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
@@ -18,7 +19,7 @@ func NewTestServer(t *testing.T, path string, response string) (*httptest.Server
 		}
 	}))
 
-	c := NewClient("merchantId", "merchantKey", &TestLogger{})
+	c := NewClient(uuid.Must(uuid.NewUUID()), "merchantKey", &TestLogger{})
 	c.HTTPClient = server.Client()
 	c.environment.ApiUrl = server.URL
 

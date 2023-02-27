@@ -2,13 +2,17 @@ package client
 
 import (
 	"github.com/bpalermo/cielo-go/types"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 const (
-	expectedMerchantId  = "merchantId"
 	expectedMerchantKey = "merchantKey"
+)
+
+var (
+	expectedMerchantId = uuid.Must(uuid.NewUUID())
 )
 
 func TestNewClient(t *testing.T) {
