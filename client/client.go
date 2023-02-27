@@ -11,7 +11,7 @@ import (
 )
 
 type CieloClient struct {
-	merchantId  string
+	merchantId  uuid.UUID
 	merchantKey string
 	environment *types.Environment
 	logger      log.Logger
@@ -20,7 +20,7 @@ type CieloClient struct {
 
 type CieloClientOption func(*CieloClient)
 
-func NewClient(merchantId string, merchantKey string, logger log.Logger, opts ...CieloClientOption) *CieloClient {
+func NewClient(merchantId uuid.UUID, merchantKey string, logger log.Logger, opts ...CieloClientOption) *CieloClient {
 	c := &CieloClient{
 		merchantId:  merchantId,
 		merchantKey: merchantKey,
@@ -61,7 +61,7 @@ func (c *CieloClient) send(req *http.Request, v interface{}) error {
 	req.Header.Set("Accept", "application/json; charset=utf-8")
 	req.Header.Add("Accept-Encoding", "gzip, deflate, br")
 	req.Header.Add("User-Agent", "CieloEcommerce/3.0 cielo-go")
-	req.Header.Add("MerchantId", c.merchantId)
+	req.Header.Add("MerchantId", c.merchantId.String())
 	req.Header.Add("MerchantKey", c.merchantKey)
 	req.Header.Add("RequestId", uuid.New().String())
 
